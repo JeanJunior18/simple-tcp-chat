@@ -1,5 +1,5 @@
-import net from "net";
-import readline from "readline";
+import net from "node:net";
+import readline from "node:readline";
 
 const client = new net.Socket();
 
@@ -8,7 +8,10 @@ const rl = readline.createInterface({
   output: process.stdout,
 });
 
-client.connect(3000, "127.0.0.1", function () {
+const HOST = "172.29.50.42"
+const PORT = 3000
+
+client.connect(PORT, HOST, function () {
   console.log("Client connected");
   client.write("Hello server! I am listening!");
 });
