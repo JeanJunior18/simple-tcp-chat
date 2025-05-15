@@ -1,8 +1,11 @@
-# 💬 LAN Chat TCP - Semana 1
+# 💬 Simple Chat TCP
 
-Este projeto é a **primeira etapa** da construção de um sistema de chat peer-to-peer que funcione **sem internet**, apenas em **rede local (LAN)**.
+- [x] O usuário deve ser capaz de comunicar com outros usuários através de um chat peer-to-peer **sem internet**, apenas em uma **rede local (LAN)**
 
-O foco nesta semana é entender e implementar a **comunicação básica entre dois dispositivos na mesma rede**, usando **TCP puro com Node.js e TypeScript**, via linha de comando.
+- [ ] O servidor deve ser capaz de identificar o próprio host e logar ao iniciar, para que seja possível acessar de outros dispositivos na rede
+
+- [ ] O cliente deve ser capaz de encontrar o servidor automaticamente através de um UDP broadcast
+
 
 ---
 
@@ -55,11 +58,11 @@ npm install
 ```
 2. Inicie o servidor em uma máquina
 ```bash
-npx ts-node server.ts
+npm run start:server
 ```
 3. Inicie o cliente em outra máquina (ou outro terminal)
 ```bash
-npx ts-node client.ts
+npm run start:client
 ```
 Certifique-se de que as máquinas estejam na mesma rede local e que você saiba o IP da máquina que roda o servidor.
 
@@ -72,7 +75,7 @@ Módulo net do Node.js – comunicação TCP
 
 readline – entrada do usuário via terminal
 
-🛠 Limitações atuais
+## 🛠 Limitações atuais
 Apenas um cliente por vez
 
 IP do servidor deve ser informado manualmente
