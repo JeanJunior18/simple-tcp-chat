@@ -1,4 +1,7 @@
-# 💬 Simple Chat TCP
+---
+#💬 Simple Chat TCP
+Chat ponto a ponto (peer-to-peer) em rede local, feito com Node.js e TCP.
+---
 
 - [x] O usuário deve ser capaz de comunicar com outros usuários através de um chat peer-to-peer **sem internet**, apenas em uma **rede local (LAN)**
 
@@ -23,10 +26,10 @@
 ---
 
 ## 🧠 Objetivo
-
-- Criar um **servidor TCP** que aceite conexões em uma porta fixa.
-- Criar um **cliente TCP** que se conecta ao servidor via IP local.
-- Permitir **troca de mensagens** simples entre cliente e servidor via terminal.
+Criar uma aplicação TCP simples para LAN com:
+- Um servidor TCP que escuta em uma porta fixa
+- Um cliente TCP que se conecta automaticamente ao servidor
+- Interface via terminal para troca de mensagens em tempo real
 
 ---
 
@@ -71,18 +74,15 @@ npm run start:client
 Certifique-se de que as máquinas estejam na mesma rede local e que você saiba o IP da máquina que roda o servidor.
 
 # ⚙️ Tecnologias utilizadas
-Node.js – ambiente de execução
+- Node.js – ambiente de execução
+- TypeScript – tipagem e organização
+- Módulo net do Node.js – comunicação TCP
+- readline – entrada do usuário via terminal
+- bonjour – descoberta automática do servidor na rede (mDNS)
 
-TypeScript – tipagem e organização
 
-Módulo net do Node.js – comunicação TCP
-
-readline – entrada do usuário via terminal
 
 ## 🛠 Limitações atuais
-Apenas um cliente por vez
-
-IP do servidor deve ser informado manualmente
 
 Sem criptografia ou autenticação
 
