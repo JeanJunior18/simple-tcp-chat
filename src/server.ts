@@ -4,6 +4,7 @@ import { getLocalIpAddress } from "./utils/ip";
 import { publishService } from "./utils/bonjour";
 import { Message } from "./types";
 import { writeMessage } from "./utils/write-message";
+import { createRl } from "./utils/rl";
 
 // Server config
 const clients: Map<string, Socket> = new Map();
@@ -56,10 +57,7 @@ server.listen(PORT, HOST, () => {
 });
 
 // Read lines config
-const rl = readline.createInterface({
-  input: process.stdin,
-  output: process.stdout,
-});
+const rl = createRl()
 
 rl.on("line", (input) => {
   console.log("Enviando mensagem: \n>");

@@ -1,22 +1,30 @@
 import net, { Socket } from "node:net";
 import { findService } from "./utils/bonjour";
-import { input, rl } from "./utils/input";
+import { input } from "./utils/input";
 import { writeMessage } from "./utils/write-message";
 import { Message } from "./types";
+import { Interface } from "node:readline";
+import { createRl } from "./utils/rl";
 
 let client: Socket;
 let username: string;
+const rl = createRl();
 
 findService()
   .then(async (service) => {
     username = await input("Qual é o seu nome? ");
-    connectClient(service.port, service.host, username);
+    connectClient(service.port, service.host, username, rl);
   })
   .catch((err) => {
     console.log("Server not found", err);
   });
 
-function connectClient(port: number, host: string, username: string) {
+export function connectClient(
+  port: number,
+  host: string,
+  username: string,
+  rl: Interface
+) {
   client = new net.Socket();
 
   client.connect(port, host, function () {

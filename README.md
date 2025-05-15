@@ -13,6 +13,8 @@ Chat ponto a ponto (peer-to-peer) em rede local, feito com Node.js e TCP.
 
 - [x] O servidor deve ser capaz de se conectar a múltiplos clientes
 
+- [ ] A aplicação deve ter testes automatizados
+
 - [ ] Resolver bug do encerramento seguro
 
 - [ ] Rodar tudo na mesma aplicação e eleger o primeiro para ser o servidor e os demais serem clientes
