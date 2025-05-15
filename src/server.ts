@@ -2,15 +2,46 @@ import net, { Socket } from "node:net";
 import readline from "node:readline";
 import { getLocalIpAddress } from "./utils/ip";
 import { publishService } from "./utils/bonjour";
+import { Message } from "./types";
+import { writeMessage } from "./utils/write-message";
 
 // Server config
-let currentSocket: Socket;
+const clients: Map<string, Socket> = new Map();
 
 const server = net.createServer((socket) => {
-  currentSocket = socket;
-  socket.write("Hello Client, I am the server\n\r");
   socket.on("data", (data) => {
-    console.log("Received", data.toString("utf-8"));
+    const message: Message = JSON.parse(data.toString());
+
+    if (message.type === "intro") {
+      if (clients.has(message.from)) {
+        writeMessage(socket, "SERVER", "system", "Username already connected");
+        console.log(`${message.from} rejected`);
+      } else {
+        clients.set(message.from, socket);
+        console.log(`${message.from} connected`);
+        writeMessage(socket, "SERVER", "message", `Bem vindo ${message.from}!`);
+      }
+    }
+
+    if (message.type === "message") {
+      console.log(`Mensagem de ${message.from}:`, message.content);
+
+      clients.forEach((socket, name) => {
+        if (name !== message.from) {
+          socket.write(JSON.stringify(message));
+        }
+      });
+    }
+  });
+
+  socket.on("close", () => {
+    for (const [name, s] of clients.entries()) {
+      if (s === socket) {
+        clients.delete(name);
+        console.log(`${name} desconectado`);
+        break;
+      }
+    }
   });
 });
 
@@ -32,11 +63,15 @@ const rl = readline.createInterface({
 
 rl.on("line", (input) => {
   console.log("Enviando mensagem: \n>");
-  currentSocket.write(input);
 });
 
 const shutdown = async () => {
   console.log("Encerrando com segurança...");
+  server.close();
+  clients.forEach((socket) => {
+    socket.end();
+    socket.destroy();
+  });
   await bonjourControl.stop();
 };
 

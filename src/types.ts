@@ -1,5 +1,6 @@
 export type Message = {
   from: string;
   content: string;
-  timestamp: string;
+  timestamp: number;
+  type: 'message' | 'intro' | 'system'
 };

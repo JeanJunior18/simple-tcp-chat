@@ -6,9 +6,13 @@
 
 - [x] O cliente deve ser capaz de encontrar o servidor automaticamente através do bonjour
 
-- [ ] O Cliente deve informar o seu nome para o servidor antes de se conectar
+- [x] O Cliente deve informar o seu nome para o servidor antes de se conectar
 
-- [ ] O servidor deve ser capaz de se conectar a múltiplos clientes
+- [x] O servidor deve ser capaz de se conectar a múltiplos clientes
+
+- [ ] Resolver bug do encerramento seguro
+
+- [ ] Rodar tudo na mesma aplicação e eleger o primeiro para ser o servidor e os demais serem clientes
 
 ## 🔜 Ideias para futuras melhorias
 
@@ -31,19 +35,19 @@
 ```plaintext
 ┌────────────────────────┐
 │     Máquina A (Host)   │
-│  IP: 192.168.0.10       │
+│  IP: 192.168.0.10      │
 │                        │
 │ ┌────────────────────┐ │
-│ │ TCP Server (Node.js)│◄────────┐
+│ │ TCP Server (Node.js) │◄───────┐
 │ └────────────────────┘ │        │
 └────────────────────────┘        │
                                   │   Mensagens via TCP
 ┌────────────────────────┐        │
 │     Máquina B (Client) │        │
-│  IP: 192.168.0.11       │       │
+│  IP: 192.168.0.11      │        │
 │                        │        │
 │ ┌────────────────────┐ │        │
-│ │ TCP Client (Node.js)├────────►┘
+│ │ TCP Client (Node.js) ├───────►┘
 │ └────────────────────┘ │
 └────────────────────────┘
 ```
