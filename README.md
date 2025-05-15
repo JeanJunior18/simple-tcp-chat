@@ -2,10 +2,19 @@
 
 - [x] O usuário deve ser capaz de comunicar com outros usuários através de um chat peer-to-peer **sem internet**, apenas em uma **rede local (LAN)**
 
-- [ ] O servidor deve ser capaz de identificar o próprio host e logar ao iniciar, para que seja possível acessar de outros dispositivos na rede
+- [x] O servidor deve ser capaz de identificar o próprio host e logar ao iniciar, para que seja possível acessar de outros dispositivos na rede
 
-- [ ] O cliente deve ser capaz de encontrar o servidor automaticamente através de um UDP broadcast
+- [x] O cliente deve ser capaz de encontrar o servidor automaticamente através do bonjour
 
+- [ ] O Cliente deve informar o seu nome para o servidor antes de se conectar
+
+- [ ] O servidor deve ser capaz de se conectar a múltiplos clientes
+
+## 🔜 Ideias para futuras melhorias
+
+- [ ] Substituir o Bonjour por descoberta via **UDP Broadcast** puro
+- [ ] Criar uma interface CLI mais amigável com mensagens coloridas e timestamps
+- [ ] Implementar reconexão automática do cliente em caso de queda
 
 ---
 
@@ -39,20 +48,11 @@
 └────────────────────────┘
 ```
 
-# 📦 Estrutura do Projeto
-simple-chat-tcp/src
-├── server.ts        # Código do servidor TCP
-├── client.ts        # Código do cliente TCP
-├── tsconfig.json    # Configuração do TypeScript
-├── package.json     # Scripts e dependências
-└── README.md        # Este documento
----
-
 # 🚀 Como testar
 
 1. Clone o repositório e instale dependências
 ```bash
-git clone <repo-url>
+git clone https://github.com/JeanJunior18/simple-tcp-chat
 cd simple-chat-tcp
 npm install
 ```

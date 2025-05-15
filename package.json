@@ -13,9 +13,13 @@
   "license": "ISC",
   "description": "",
   "devDependencies": {
+    "@types/bonjour": "^3.5.13",
     "@types/node": "^22.15.18",
     "ts-node": "^10.9.2",
     "ts-node-dev": "^2.0.0",
     "typescript": "^5.8.3"
+  },
+  "dependencies": {
+    "bonjour": "^3.3.0"
   }
 }
