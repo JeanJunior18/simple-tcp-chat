@@ -1,8 +1,8 @@
 import net, { Socket } from "node:net";
-import { findService } from "./utils/bonjour";
-import { input, rl } from "./utils/input";
-import { writeMessage } from "./utils/write-message";
-import { Message } from "./types";
+import { findService } from "../utils/bonjour";
+import { input, rl } from "../utils/input";
+import { writeMessage } from "../utils/write-message";
+import { Message } from "../types";
 
 let client: Socket;
 let username: string;

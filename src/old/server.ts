@@ -1,9 +1,9 @@
 import net, { Socket } from "node:net";
 import readline from "node:readline";
-import { getLocalIpAddress } from "./utils/ip";
-import { publishService } from "./utils/bonjour";
-import { Message } from "./types";
-import { writeMessage } from "./utils/write-message";
+import { getLocalIpAddress } from "../utils/ip";
+import { publishService } from "../utils/bonjour";
+import { Message } from "../types";
+import { writeMessage } from "../utils/write-message";
 
 // Server config
 const clients: Map<string, Socket> = new Map();
@@ -72,7 +72,7 @@ const shutdown = async () => {
     socket.end();
     socket.destroy();
   });
-  await bonjourControl.stop();
+  await bonjourControl?.stop();
 };
 
 process.on("SIGINT", shutdown);

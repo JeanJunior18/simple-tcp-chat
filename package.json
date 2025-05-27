@@ -5,8 +5,9 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "tsc",
-    "start:server": "ts-node-dev src/server.ts",
-    "start:client": "ts-node-dev src/client.ts"
+    "start:dev": "ts-node-dev src/index.ts",
+    "start:server": "ts-node-dev src/old/server.ts",
+    "start:client": "ts-node-dev src/old/client.ts"
   },
   "keywords": [],
   "author": "",

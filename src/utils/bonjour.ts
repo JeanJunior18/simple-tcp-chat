@@ -32,7 +32,7 @@ export function publishService(name: string, port: number, host: string) {
           }
         }, 2000);
 
-        service.stop(() => {
+        service?.stop(() => {
           if (!resolved) {
             clearTimeout(timeout);
             bonjourInstance?.destroy();
@@ -44,17 +44,26 @@ export function publishService(name: string, port: number, host: string) {
   };
 }
 
-export function findService(type = "chat"): Promise<RemoteService> {
+export function findService(type = "chat", timeoutMs = 5000): Promise<RemoteService> {
   return new Promise((resolve, reject) => {
     const instance = bonjour();
+    console.log("🔍 Buscando servidor via Bonjour");
+
+    const timeout = setTimeout(() => {
+      instance.destroy();
+      reject(new Error("⏱️ Timeout: serviço não encontrado dentro do tempo limite"));
+    }, timeoutMs);
+    
     instance.findOne({ type }, (service) => {
-      instance.destroy(); // encerrar o discover depois que achar
+      clearTimeout(timeout); // limpa o timeout se encontrar antes
+      instance.destroy();
       if (service) {
         console.log("🔍 Serviço encontrado via Bonjour");
         resolve(service);
       } else {
-        reject("Serviço não encontrado");
+        reject(new Error("❌ Serviço não encontrado"));
       }
     });
   });
 }
+
