@@ -1,5 +1,8 @@
+import { TcpChatNode } from "../core/TcpChat";
 import { app, BrowserWindow, ipcMain } from "electron";
 import * as path from "path";
+
+let chatCore: TcpChatNode;
 
 function createWindow() {
   const mainWindow = new BrowserWindow({
@@ -19,10 +22,6 @@ function createWindow() {
     }
   );
 
-  mainWindow.webContents.on("plugin-crashed", () => {
-    console.error("💥 Renderer process crashed!");
-  });
-
   if (process.env.NODE_ENV?.trim() == "development") {
     console.log("🔧 DEV mode: carregando Vite dev server");
     mainWindow.loadURL("http://localhost:5173");
@@ -32,8 +31,20 @@ function createWindow() {
     mainWindow.loadFile(path.join(__dirname, "../index.html"));
   }
 }
-app.disableHardwareAcceleration();
-app.whenReady().then(() => {
+app.whenReady().then(async () => {
+  chatCore = new TcpChatNode();
+  await chatCore.start();
+
+  ipcMain.handle("send-message", (_event, msg: string) => {
+    chatCore.sendTextMessage(msg);
+  });
+
+  chatCore.onMessage((msg) => {
+    BrowserWindow.getAllWindows().forEach((win) => {
+      win.webContents.send("new-message", msg);
+    });
+  });
+
   createWindow();
 
   app.on("activate", () => {
