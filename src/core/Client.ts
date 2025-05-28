@@ -1,11 +1,13 @@
 import { Socket } from "node:net";
 import { writeMessage } from "../utils/write-message";
 import { Message } from "../types/message";
+import { readMessages } from "../utils/read-messages";
 
 export class TCPChatClient {
   private socket!: Socket;
   private username!: string;
   private isConnected = false;
+  private messageCallback?: (msg: Message) => void;
 
   constructor(private readonly host: string, private readonly port = 3000) {}
 
@@ -36,19 +38,29 @@ export class TCPChatClient {
     process.exit();
   }
 
+  onMessage(callback: (msg: Message) => void) {
+    this.messageCallback = callback;
+  }
+
   private async connect(port: number, host: string) {
     console.log("Conectando!");
     return new Promise((res, rej) => {
       this.socket = new Socket();
 
-      this.socket.connect(port, host, () => {
-        console.log("Connected!");
+      this.socket.connect(port, host);
+
+      this.socket.on("connect", () => {
         this.isConnected = true;
         writeMessage(this.socket, this.username, "intro");
         res(this.socket);
       });
 
-      this.socket.on("data", this.onMessage);
+      this.socket.on("data", (data) => {
+        const messages = readMessages(data);
+        messages.forEach((message) => {
+          this.handleIncomingMessage(message);
+        });
+      });
 
       this.socket.on("close", () => {
         console.log("Connection closed");
@@ -67,11 +79,14 @@ export class TCPChatClient {
     });
   }
 
-  private onMessage(data: Buffer<ArrayBufferLike>) {
+  private handleIncomingMessage(message: Message) {
     try {
-      const message: Message = JSON.parse(data.toString());
       const time = new Date(message.timestamp).toLocaleTimeString();
       console.log(`[${time}] ${message.from}: ${message.content}`);
+
+      if (this.messageCallback) {
+        this.messageCallback(message);
+      }
     } catch (err) {
       console.error("Erro ao processar mensagem:", err);
     }

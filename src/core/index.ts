@@ -1,3 +1,6 @@
 import { TcpChatNode } from "./TcpChat";
 
-new TcpChatNode().start()
+(async () => {
+  const chatCore = new TcpChatNode();
+  await chatCore.start();
+})();
