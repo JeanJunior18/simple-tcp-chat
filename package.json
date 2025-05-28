@@ -2,13 +2,13 @@
   "name": "simple-tcp-chat",
   "version": "1.0.0",
   "main": "dist/electron/main.js",
-  "type": "module",
+  "type": "commonjs",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "vite build && tsc",
+    "build": "tsc && vite build",
     "prestart": "npm run build",
     "start": "electron .",
-    "dev": "NODE_ENV=development concurrently \"vite\" \"tsc --noEmit --watch\" \"electron .\"",
+    "dev": "set NODE_ENV=development && concurrently \"vite\" \"tsc --noEmit --watch\" \"electron .\"",
     "start:core": "ts-node-dev src/core/index.ts"
   },
   "keywords": [],
@@ -31,6 +31,7 @@
   "dependencies": {
     "bonjour": "^3.3.0",
     "react": "^19.1.0",
-    "react-dom": "^19.1.0"
+    "react-dom": "^19.1.0",
+    "simple-tcp-chat": "file:"
   }
 }

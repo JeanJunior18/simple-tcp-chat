@@ -4,9 +4,8 @@ function App() {
   const [messages, setMessages] = useState<string[]>([])
 
   useEffect(() => {
-    window.api.on('new-message', (msg) => {
-      setMessages((prev) => [...prev, msg])
-    })
+    window.api.on('eventChannel', (msg) => { });
+    window.api.send('toMain', {});
   }, [])
 
   const startServer = () => {

@@ -1,5 +1,5 @@
 import { contextBridge, ipcRenderer } from "electron";
-
+console.log('Preload success loaded!');
 contextBridge.exposeInMainWorld("api", {
   send: (channel: string, ...args: any[]) => {
     const validChannels = ["toMain"];

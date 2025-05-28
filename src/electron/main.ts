@@ -1,9 +1,5 @@
 import { app, BrowserWindow, ipcMain } from "electron";
 import * as path from "path";
-import { fileURLToPath } from "url";
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
 
 function createWindow() {
   const mainWindow = new BrowserWindow({
@@ -27,12 +23,13 @@ function createWindow() {
     console.error("💥 Renderer process crashed!");
   });
 
-  if (process.env.NODE_ENV === "development") {
+  if (process.env.NODE_ENV?.trim() == "development") {
     console.log("🔧 DEV mode: carregando Vite dev server");
     mainWindow.loadURL("http://localhost:5173");
+    mainWindow.webContents.openDevTools();
   } else {
     console.log("📦 PROD mode: carregando build");
-    mainWindow.loadFile(path.join(__dirname, "../renderer/index.html"));
+    mainWindow.loadFile(path.join(__dirname, "../index.html"));
   }
 }
 app.disableHardwareAcceleration();
