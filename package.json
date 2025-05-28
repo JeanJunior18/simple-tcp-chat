@@ -1,10 +1,12 @@
 {
   "name": "simple-tcp-chat",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "dist/electron/main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "tsc",
+    "prestart": "npm run build",
+    "start": "electron ./dist/electron/main.js",
     "start:dev": "ts-node-dev src/index.ts",
     "start:server": "ts-node-dev src/old/server.ts",
     "start:client": "ts-node-dev src/old/client.ts"
@@ -16,6 +18,7 @@
   "devDependencies": {
     "@types/bonjour": "^3.5.13",
     "@types/node": "^22.15.18",
+    "electron": "^36.3.1",
     "ts-node": "^10.9.2",
     "ts-node-dev": "^2.0.0",
     "typescript": "^5.8.3"
