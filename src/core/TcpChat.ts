@@ -1,7 +1,7 @@
 import { TCPChatClient } from "./Client";
 import { TCPChatServer } from "./Server";
-import { findService, publishService } from "./utils/bonjour";
-import { getLocalIpAddress } from "./utils/ip";
+import { findService, publishService } from "../utils/bonjour";
+import { getLocalIpAddress } from "../utils/ip";
 
 export class TcpChatNode {
   private client?: TCPChatClient;

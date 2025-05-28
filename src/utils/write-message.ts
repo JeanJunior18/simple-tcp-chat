@@ -1,5 +1,5 @@
 import { Socket } from "node:net";
-import { Message } from "../types";
+import { Message } from "../types/message";
 
 export function writeMessage(socket: Socket, from: string, type: Message["type"], text?: string) {
   const message: Message = {

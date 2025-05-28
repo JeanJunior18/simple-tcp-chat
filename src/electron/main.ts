@@ -1,19 +1,41 @@
-import { app, BrowserWindow } from "electron";
+import { app, BrowserWindow, ipcMain } from "electron";
 import * as path from "path";
+import { fileURLToPath } from "url";
 
-let mainWindow: BrowserWindow | null = null;
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
-const indexPath = path.join(__dirname, "electron/index.html");
-console.log(indexPath);
-
-const createWindow = () => {
-  mainWindow = new BrowserWindow({
+function createWindow() {
+  const mainWindow = new BrowserWindow({
     width: 800,
     height: 600,
+    webPreferences: {
+      preload: path.join(__dirname, "preload.js"),
+      contextIsolation: true,
+      nodeIntegration: false,
+    },
   });
-  mainWindow.loadFile(indexPath);
-};
 
+  mainWindow.webContents.on(
+    "did-fail-load",
+    (event, errorCode, errorDescription) => {
+      console.error("❌ Failed to load:", errorDescription);
+    }
+  );
+
+  mainWindow.webContents.on("plugin-crashed", () => {
+    console.error("💥 Renderer process crashed!");
+  });
+
+  if (process.env.NODE_ENV === "development") {
+    console.log("🔧 DEV mode: carregando Vite dev server");
+    mainWindow.loadURL("http://localhost:5173");
+  } else {
+    console.log("📦 PROD mode: carregando build");
+    mainWindow.loadFile(path.join(__dirname, "../renderer/index.html"));
+  }
+}
+app.disableHardwareAcceleration();
 app.whenReady().then(() => {
   createWindow();
 
@@ -23,5 +45,5 @@ app.whenReady().then(() => {
 });
 
 app.on("window-all-closed", () => {
-  app.quit();
+  if (process.platform !== "darwin") app.quit();
 });

@@ -1,7 +1,6 @@
 import { Socket } from "node:net";
-import { findService } from "./utils/bonjour";
-import { writeMessage } from "./utils/write-message";
-import { Message } from "./types";
+import { writeMessage } from "../utils/write-message";
+import { Message } from "../types/message";
 
 export class TCPChatClient {
   private socket!: Socket;

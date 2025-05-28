@@ -2,14 +2,14 @@
   "name": "simple-tcp-chat",
   "version": "1.0.0",
   "main": "dist/electron/main.js",
+  "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "tsc",
+    "build": "vite build && tsc",
     "prestart": "npm run build",
-    "start": "electron ./dist/electron/main.js",
-    "start:dev": "ts-node-dev src/index.ts",
-    "start:server": "ts-node-dev src/old/server.ts",
-    "start:client": "ts-node-dev src/old/client.ts"
+    "start": "electron .",
+    "dev": "NODE_ENV=development concurrently \"vite\" \"tsc --noEmit --watch\" \"electron .\"",
+    "start:core": "ts-node-dev src/core/index.ts"
   },
   "keywords": [],
   "author": "",
@@ -18,12 +18,19 @@
   "devDependencies": {
     "@types/bonjour": "^3.5.13",
     "@types/node": "^22.15.18",
+    "@types/react-dom": "^19.1.5",
+    "@vitejs/plugin-react": "^4.5.0",
+    "concurrently": "^9.1.2",
     "electron": "^36.3.1",
+    "electron-builder": "^26.0.12",
     "ts-node": "^10.9.2",
     "ts-node-dev": "^2.0.0",
-    "typescript": "^5.8.3"
+    "typescript": "^5.8.3",
+    "vite": "^6.3.5"
   },
   "dependencies": {
-    "bonjour": "^3.3.0"
+    "bonjour": "^3.3.0",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0"
   }
 }

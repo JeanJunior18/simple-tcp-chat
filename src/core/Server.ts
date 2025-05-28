@@ -1,6 +1,6 @@
 import { Socket, Server, createServer } from "node:net";
-import { Message } from "./types";
-import { writeMessage } from "./utils/write-message";
+import { Message } from "../types/message";
+import { writeMessage } from "../utils/write-message";
 
 export class TCPChatServer {
   private clients: Map<string, Socket> = new Map();
