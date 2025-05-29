@@ -1,0 +1,28 @@
+/* Container principal ocupando a tela inteira */
+.chat-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  width: 100vw;
+  background-color: #ffffff;
+}
+
+/* Cabeçalho fixo */
+.chat-container h1 {
+  background-color: #343a40;
+  color: #ffffff;
+  padding: 16px;
+  text-align: center;
+  font-size: 1.5rem;
+  border-bottom: 1px solid #444;
+}
+
+/* Área de mensagens com scroll flexível */
+.chat-box {
+  flex: 1;
+  padding: 20px;
+  overflow-y: auto;
+  background-color: #f8f9fa;
+  display: flex;
+  flex-direction: column;
+}

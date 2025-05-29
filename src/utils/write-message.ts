@@ -14,4 +14,5 @@ export function writeMessage(
     timestamp: Date.now(),
   };
   socket.write(JSON.stringify(message) + "\n");
+  return message;
 }

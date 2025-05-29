@@ -8,16 +8,15 @@ export class TcpChatNode {
   private client?: TCPChatClient;
   private server?: TCPChatServer;
   private bonjourControl?: Awaited<ReturnType<typeof publishService>>;
-  private username = "Jean";
   private isServer = false;
   private messageCallback?: (msg: Message) => void;
 
-  async start() {
+  async start(username: string) {
     try {
       const service = await findService();
       console.log("Servidor já existe. Entrando como cliente...");
       this.client = new TCPChatClient(service.host, service.port);
-      await this.client.start(this.username);
+      await this.client.start(username);
 
       if (this.messageCallback) {
         this.client.onMessage(this.messageCallback);
@@ -31,7 +30,7 @@ export class TcpChatNode {
       if (!HOST) throw new Error("Host not found");
       const PORT = 3000;
       this.server = new TCPChatServer(HOST, PORT);
-      await this.server.start(`HOST - ${this.username}`);
+      await this.server.start(`HOST - ${username}`);
       this.bonjourControl = publishService("TcpChat", PORT, HOST);
 
       if (this.messageCallback) {

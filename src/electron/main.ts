@@ -6,8 +6,6 @@ let chatCore: TcpChatNode;
 
 function createWindow() {
   const mainWindow = new BrowserWindow({
-    width: 800,
-    height: 600,
     webPreferences: {
       preload: path.join(__dirname, "preload.js"),
       contextIsolation: true,
@@ -33,19 +31,25 @@ function createWindow() {
 }
 app.whenReady().then(async () => {
   chatCore = new TcpChatNode();
-  await chatCore.start();
+  let username: string;
+  createWindow();
 
-  ipcMain.handle("send-message", (_event, msg: string) => {
-    chatCore.sendTextMessage(msg);
-  });
+  ipcMain.handle("set-username", async (_event, name) => {
+    if (username) return;
+    username = name;
+    await chatCore.start(name);
 
-  chatCore.onMessage((msg) => {
-    BrowserWindow.getAllWindows().forEach((win) => {
-      win.webContents.send("new-message", msg);
+    chatCore.onMessage((msg) => {
+      BrowserWindow.getAllWindows().forEach((win) => {
+        win.webContents.send("new-message", msg);
+      });
     });
   });
 
-  createWindow();
+  ipcMain.handle("send-message", (_event, msg: string) => {
+    if (!username) return;
+    chatCore.sendTextMessage(msg);
+  });
 
   app.on("activate", () => {
     if (BrowserWindow.getAllWindows().length === 0) createWindow();

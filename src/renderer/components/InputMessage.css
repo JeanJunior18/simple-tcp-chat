@@ -1,0 +1,59 @@
+/* Área de input fixada na parte inferior */
+.input-area {
+  display: flex;
+  padding: 16px;
+  border-top: 1px solid #ccc;
+  background-color: #f1f1f1;
+}
+
+.input-area input {
+  flex: 1;
+  padding: 12px;
+  font-size: 1rem;
+  border: 1px solid #bbb;
+  border-radius: 6px;
+  margin-right: 10px;
+  outline: none;
+}
+
+.input-area button {
+  padding: 12px 20px;
+  font-size: 1rem;
+  background-color: #007bff;
+  border: none;
+  color: white;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.input-area button:hover {
+  background-color: #0056b3;
+}
+
+/* Versão especial do input-area para escolher o username */
+.input-area.username-input {
+  background-color: #e9f0ff;
+  border-top: 2px solid #007bff;
+}
+
+.input-area.username-input button {
+  background-color: #007bff;
+}
+
+.input-area.username-input button:hover {
+  background-color: #0056b3;
+}
+
+.input-area.username-input input {
+  border-color: #007bff;
+  max-width: 300px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.input-area.username-input {
+  background-color: #e9f0ff;
+  border-top: 2px solid #007bff;
+  justify-content: center;
+}

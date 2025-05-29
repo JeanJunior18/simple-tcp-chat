@@ -7,6 +7,7 @@ declare global {
     api: {
       sendMessage: (msg: string) => void;
       onMessage: (callback: (msg: Message) => void) => void;
+      setUsername: (username: string) => void;
     };
   }
 }

@@ -36,6 +36,13 @@ export class TCPChatServer {
     this.clients.forEach((socket) => {
       writeMessage(socket, this.username, "message", content);
     });
+
+    this.messageCallback?.({
+      content,
+      from: this.username,
+      timestamp: Date.now(),
+      type: "message",
+    });
   }
 
   onMessage(callback: (msg: Message) => void) {
