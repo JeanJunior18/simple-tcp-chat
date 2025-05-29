@@ -30,7 +30,7 @@ export class TcpChatNode {
       if (!HOST) throw new Error("Host not found");
       const PORT = 3000;
       this.server = new TCPChatServer(HOST, PORT);
-      await this.server.start(`HOST - ${username}`);
+      await this.server.start(username);
       this.bonjourControl = publishService("TcpChat", PORT, HOST);
 
       if (this.messageCallback) {

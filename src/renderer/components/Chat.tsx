@@ -27,7 +27,7 @@ function Chat() {
     <div className="chat-container">
       <h1>TCP Chat</h1>
       <div className="chat-box">
-        {messages.map((msg, index) => <MessageBubble key={index} message={msg} />)}
+        {messages.map((msg, index) => <MessageBubble key={index} message={msg} currentUser={username} />)}
         <div ref={messagesEndRef} />
       </div>
       <InputMessage

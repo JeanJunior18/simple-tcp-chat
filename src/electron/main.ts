@@ -23,7 +23,6 @@ function createWindow() {
   if (process.env.NODE_ENV?.trim() == "development") {
     console.log("🔧 DEV mode: carregando Vite dev server");
     mainWindow.loadURL("http://localhost:5173");
-    mainWindow.webContents.openDevTools();
   } else {
     console.log("📦 PROD mode: carregando build");
     mainWindow.loadFile(path.join(__dirname, "../index.html"));
