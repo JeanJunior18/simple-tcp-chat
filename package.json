@@ -7,33 +7,49 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "tsc && vite build",
     "prestart": "npm run build",
-    "start": "electron .",
     "predev": "npm run build",
     "dev": "set NODE_ENV=development && concurrently \"vite\" \"tsc --noEmit --watch\" \"electron .\"",
-    "start:core": "ts-node-dev src/core/index.ts"
+    "start:core": "ts-node-dev src/core/index.ts",
+    "start": "electron-forge start",
+    "make": "electron-forge make"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "description": "",
   "devDependencies": {
+    "@electron-forge/publisher-github": "^7.8.1",
     "@types/bonjour": "^3.5.13",
     "@types/node": "^22.15.18",
     "@types/react-dom": "^19.1.5",
     "@vitejs/plugin-react": "^4.5.0",
     "concurrently": "^9.1.2",
-    "electron": "^36.3.1",
-    "electron-builder": "^26.0.12",
+    "electron-forge": "^5.2.4",
     "ts-node": "^10.9.2",
     "ts-node-dev": "^2.0.0",
     "typescript": "^5.8.3",
     "vite": "^6.3.5",
-    "vite-tsconfig-paths": "^5.1.4"
+    "vite-tsconfig-paths": "^5.1.4",
+    "electron-prebuilt-compile": "36.3.1"
   },
   "dependencies": {
     "bonjour": "^3.3.0",
     "react": "^19.1.0",
-    "react-dom": "^19.1.0",
-    "simple-tcp-chat": "file:"
+    "react-dom": "^19.1.0"
+  },
+  "config": {
+    "forge": {
+      "packagerConfig": {
+        "noSymlink": true
+      },
+      "makers": [
+        {
+          "name": "@electron-forge/maker-squirrel",
+          "config": {
+            "name": "SimpleTcpChat"
+          }
+        }
+      ]
+    }
   }
 }
