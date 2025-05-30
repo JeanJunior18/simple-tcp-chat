@@ -1,5 +1,5 @@
 ---
-#💬 Simple Chat TCP
+# 💬 Simple Chat TCP
 Chat ponto a ponto (peer-to-peer) em rede local, feito com Node.js e TCP.
 ---
 
