@@ -9,6 +9,7 @@
     "prestart": "npm run build",
     "predev": "npm run build",
     "dev": "set NODE_ENV=development && concurrently \"vite\" \"tsc --noEmit --watch\" \"electron .\"",
+    "dev:debug": "set NODE_ENV=development && concurrently \"vite\" \"tsc --noEmit --watch\" \"electron --inspect=9229 .\"",
     "start:core": "ts-node-dev src/core/index.ts",
     "start": "electron-forge start",
     "package": "electron-forge package",
