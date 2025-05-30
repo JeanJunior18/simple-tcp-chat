@@ -28,7 +28,9 @@ Chat ponto a ponto (peer-to-peer) em rede local, feito com Node.js e TCP.
 ---
 
 ## 🧠 Objetivo
+
 Criar uma aplicação TCP simples para LAN com:
+
 - Um servidor TCP que escuta em uma porta fixa
 - Um cliente TCP que se conecta automaticamente ao servidor
 - Interface via terminal para troca de mensagens em tempo real
@@ -60,33 +62,39 @@ Criar uma aplicação TCP simples para LAN com:
 # 🚀 Como testar
 
 1. Clone o repositório e instale dependências
+
 ```bash
 git clone https://github.com/JeanJunior18/simple-tcp-chat
 cd simple-chat-tcp
 npm install
 ```
+
 2. Inicie o servidor em uma máquina
+
 ```bash
-npm run start:server
+npm run dev
 ```
-3. Inicie o cliente em outra máquina (ou outro terminal)
-```bash
-npm run start:client
-```
+
 Certifique-se de que as máquinas estejam na mesma rede local e que você saiba o IP da máquina que roda o servidor.
 
+# 📦 Executáveis Gerados
+
+Os executáveis gerados pelo Electron Forge estão disponíveis para download na pasta [📁 out/make](out/make/).
+
+- [⬇️ Download do Executável para Windows](out/make/SimpleTcpChat-1.0.0.exe)
+
+> **Nota:** O nome do executável pode mudar dependendo da versão gerada (e.g., `SimpleTcpChat-1.0.1.exe`). Verifique a pasta para o arquivo mais recente.
+
 # ⚙️ Tecnologias utilizadas
+
 - Node.js – ambiente de execução
 - TypeScript – tipagem e organização
 - Módulo net do Node.js – comunicação TCP
 - readline – entrada do usuário via terminal
 - bonjour – descoberta automática do servidor na rede (mDNS)
 
-
-
 ## 🛠 Limitações atuais
 
 Sem criptografia ou autenticação
 
 Terminal como única interface
-
