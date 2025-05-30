@@ -3,6 +3,7 @@ import { TCPChatServer } from "./Server";
 import { findService, publishService } from "../utils/bonjour";
 import { getLocalIpAddress } from "../utils/ip";
 import { Message } from "../types/message";
+import { generateRandomNumber } from "../utils/random";
 
 export class TcpChatNode {
   private client?: TCPChatClient;
@@ -13,29 +14,12 @@ export class TcpChatNode {
 
   async start(username: string) {
     try {
-      const service = await findService();
-      console.log("Servidor já existe. Entrando como cliente...");
-      if (!service.host) throw new Error("HOST is required");
-      this.client = new TCPChatClient(service.host, service.port);
-      await this.client.start(username);
-
-      if (this.messageCallback) {
-        this.client.onMessage(this.messageCallback);
-      }
-
-      this.client.sendTextMessage("Olá! Acabei de entrar no chat.");
+      await this.connectAsClient(username);
     } catch {
-      console.log("Nenhum servidor encontrado. Inicializando como servidor...");
-      this.isServer = true;
-      const HOST = getLocalIpAddress();
-      if (!HOST) throw new Error("Host not found");
-      const PORT = 3000;
-      this.server = new TCPChatServer(HOST, PORT);
-      await this.server.start(username);
-      this.bonjourControl = publishService("TcpChat", PORT, HOST);
-
-      if (this.messageCallback) {
-        this.server.onMessage(this.messageCallback);
+      await this.connectAsHost(username);
+      try {
+      } catch {
+        await this.connectAsClient(username);
       }
     }
 
@@ -59,6 +43,36 @@ export class TcpChatNode {
 
     if (this.server) {
       this.server.onMessage(callback);
+    }
+  }
+
+  private async connectAsClient(username: string) {
+    const timeOut = generateRandomNumber(2000, 5000);
+    const service = await findService("chat", timeOut);
+    console.log("Servidor já existe. Entrando como cliente...");
+    if (!service.host) throw new Error("HOST is required");
+    this.client = new TCPChatClient(service.host, service.port);
+    await this.client.start(username);
+
+    if (this.messageCallback) {
+      this.client.onMessage(this.messageCallback);
+    }
+
+    this.client.sendTextMessage("Olá! Acabei de entrar no chat.");
+  }
+
+  private async connectAsHost(username: string) {
+    console.log("Nenhum servidor encontrado. Inicializando como servidor...");
+    this.isServer = true;
+    const HOST = getLocalIpAddress();
+    if (!HOST) throw new Error("Host not found");
+    const PORT = 3000;
+    this.server = new TCPChatServer(HOST, PORT);
+    await this.server.start(username);
+    this.bonjourControl = publishService("TcpChat", PORT, HOST);
+
+    if (this.messageCallback) {
+      this.server.onMessage(this.messageCallback);
     }
   }
 

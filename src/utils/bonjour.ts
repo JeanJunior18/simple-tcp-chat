@@ -72,9 +72,10 @@ export function publishService(name: string, port: number, host?: string) {
 }
 
 export function findService(
-  type: string = "chat",
-  timeoutMs: number = 5000
+  type: string,
+  timeoutMs: number
 ): Promise<BonjourService> {
+  console.warn("Search timeout", timeoutMs);
   return new Promise((resolve, reject) => {
     let instance: bonjour.Bonjour | null = null;
     try {
