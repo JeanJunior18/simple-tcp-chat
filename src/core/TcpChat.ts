@@ -15,6 +15,7 @@ export class TcpChatNode {
     try {
       const service = await findService();
       console.log("Servidor já existe. Entrando como cliente...");
+      if (!service.host) throw new Error("HOST is required");
       this.client = new TCPChatClient(service.host, service.port);
       await this.client.start(username);
 

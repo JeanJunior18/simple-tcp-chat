@@ -11,21 +11,23 @@
     "dev": "set NODE_ENV=development && concurrently \"vite\" \"tsc --noEmit --watch\" \"electron .\"",
     "start:core": "ts-node-dev src/core/index.ts",
     "start": "electron-forge start",
+    "package": "electron-forge package",
     "make": "electron-forge make"
   },
   "keywords": [],
-  "author": "",
+  "author": "Jean Junior Dev",
+  "description": "Um aplicativo de chat TCP simples",
   "license": "ISC",
-  "description": "",
   "devDependencies": {
+    "@electron-forge/cli": "^7.8.1",
+    "@electron-forge/maker-squirrel": "^7.8.1",
     "@electron-forge/publisher-github": "^7.8.1",
     "@types/bonjour": "^3.5.13",
-    "@types/node": "^22.15.18",
+    "@types/node": "^22.7.5",
     "@types/react-dom": "^19.1.5",
-    "@vitejs/plugin-react": "^4.5.0",
+    "@vitejs/plugin-react": "^4.3.2",
     "concurrently": "^9.1.2",
-    "electron-forge": "^5.2.4",
-    "electron-prebuilt-compile": "8.2.0",
+    "electron": "^32.2.0",
     "ts-node": "^10.9.2",
     "ts-node-dev": "^2.0.0",
     "typescript": "^5.8.3",
@@ -33,14 +35,15 @@
     "vite-tsconfig-paths": "^5.1.4"
   },
   "dependencies": {
-    "bonjour": "^3.3.0",
+    "bonjour": "^3.5.0",
     "react": "^19.1.0",
-    "react-dom": "^19.1.0"
+    "react-dom": "^19.1.0",
+    "electron-squirrel-startup": "^1.0.0"
   },
   "config": {
     "forge": {
       "packagerConfig": {
-        "noSymlink": true
+        "asar": true
       },
       "makers": [
         {

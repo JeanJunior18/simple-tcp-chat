@@ -25,7 +25,7 @@ function createWindow() {
     mainWindow.loadURL("http://localhost:5173");
   } else {
     console.log("📦 PROD mode: carregando build");
-    mainWindow.loadFile(path.join(__dirname, "../index.html"));
+    mainWindow.loadFile(path.join(__dirname, "../../renderer/index.html"));
   }
 }
 app.whenReady().then(async () => {
