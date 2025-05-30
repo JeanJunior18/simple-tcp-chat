@@ -25,12 +25,12 @@
     "@vitejs/plugin-react": "^4.5.0",
     "concurrently": "^9.1.2",
     "electron-forge": "^5.2.4",
+    "electron-prebuilt-compile": "8.2.0",
     "ts-node": "^10.9.2",
     "ts-node-dev": "^2.0.0",
     "typescript": "^5.8.3",
     "vite": "^6.3.5",
-    "vite-tsconfig-paths": "^5.1.4",
-    "electron-prebuilt-compile": "36.3.1"
+    "vite-tsconfig-paths": "^5.1.4"
   },
   "dependencies": {
     "bonjour": "^3.3.0",
