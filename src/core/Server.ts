@@ -7,7 +7,8 @@ export class TCPChatServer {
   private clients: Map<string, Socket> = new Map();
   private server: Server;
   private username!: string;
-  private messageCallback?: (msg: Message) => void;
+  private onMessageCallback?: (msg: Message) => void;
+  private onConnectCallback?: (username: string) => void;
 
   constructor(private readonly host: string, private readonly port: number) {
     this.server = createServer(this.handleConnection.bind(this));
@@ -37,7 +38,7 @@ export class TCPChatServer {
       writeMessage(socket, this.username, "message", content);
     });
 
-    this.messageCallback?.({
+    this.onMessageCallback?.({
       content,
       from: this.username,
       timestamp: Date.now(),
@@ -46,7 +47,11 @@ export class TCPChatServer {
   }
 
   onMessage(callback: (msg: Message) => void) {
-    this.messageCallback = callback;
+    this.onMessageCallback = callback;
+  }
+
+  onConnect(callback: (username: string) => void) {
+    this.onConnectCallback = callback;
   }
 
   private handleConnection(socket: Socket) {
@@ -61,11 +66,17 @@ export class TCPChatServer {
 
   private handleIncomingMessage(socket: Socket, message: Message) {
     try {
+      this.onMessageCallback?.(message);
+
+      this.clients.forEach((clientSocket, name) => {
+        writeMessage(clientSocket, message.from, message.type, message.content);
+      });
+
       if (message.type === "intro") {
         if (this.clients.has(message.from)) {
           writeMessage(
             socket,
-            "SERVER",
+            this.username,
             "system",
             "Username already connected"
           );
@@ -75,29 +86,17 @@ export class TCPChatServer {
           console.log(`${message.from} connected`);
           writeMessage(
             socket,
-            "SERVER",
-            "message",
-            `Bem vindo ${message.from}!`
+            this.username,
+            "system",
+            `${message.from} entrou no chat`
           );
+          this.onConnectCallback?.(this.username);
         }
       }
 
       if (message.type === "message") {
         const time = new Date(message.timestamp).toLocaleTimeString();
         console.log(`[${time}] ${message.from}: ${message.content}`);
-
-        this.clients.forEach((clientSocket, name) => {
-          writeMessage(
-            clientSocket,
-            message.from,
-            message.type,
-            message.content
-          );
-        });
-
-        if (this.messageCallback) {
-          this.messageCallback(message);
-        }
       }
     } catch (err) {
       console.error("Erro ao processar mensagem", err);

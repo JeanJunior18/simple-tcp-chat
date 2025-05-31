@@ -10,7 +10,8 @@ export class TcpChatNode {
   private server?: TCPChatServer;
   private bonjourControl?: Awaited<ReturnType<typeof publishService>>;
   private isServer = false;
-  private messageCallback?: (msg: Message) => void;
+  private onMessageCallback?: (msg: Message) => void;
+  private onConnectCallback?: (username: string) => void;
 
   async start(username: string) {
     try {
@@ -35,7 +36,7 @@ export class TcpChatNode {
   }
 
   onMessage(callback: (msg: Message) => void) {
-    this.messageCallback = callback;
+    this.onMessageCallback = callback;
 
     if (this.client) {
       this.client.onMessage(callback);
@@ -43,6 +44,18 @@ export class TcpChatNode {
 
     if (this.server) {
       this.server.onMessage(callback);
+    }
+  }
+
+  onConnect(callback: (username: string) => void) {
+    this.onConnectCallback = callback;
+
+    if (this.client) {
+      this.client.onConnect(callback);
+    }
+
+    if (this.server) {
+      this.server.onConnect(callback);
     }
   }
 
@@ -54,11 +67,12 @@ export class TcpChatNode {
     this.client = new TCPChatClient(service.host, service.port);
     await this.client.start(username);
 
-    if (this.messageCallback) {
-      this.client.onMessage(this.messageCallback);
+    if (this.onMessageCallback) {
+      this.client.onMessage(this.onMessageCallback);
     }
-
-    this.client.sendTextMessage("Olá! Acabei de entrar no chat.");
+    if (this.onConnectCallback) {
+      this.client.onConnect(this.onConnectCallback);
+    }
   }
 
   private async connectAsHost(username: string) {
@@ -71,8 +85,11 @@ export class TcpChatNode {
     await this.server.start(username);
     this.bonjourControl = publishService("TcpChat", PORT, HOST);
 
-    if (this.messageCallback) {
-      this.server.onMessage(this.messageCallback);
+    if (this.onMessageCallback) {
+      this.server.onMessage(this.onMessageCallback);
+    }
+    if (this.onConnectCallback) {
+      this.server.onConnect(this.onConnectCallback);
     }
   }
 

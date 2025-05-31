@@ -11,7 +11,7 @@
     "strict": true,
     "baseUrl": "./src",
     "jsx": "react-jsx",
-    "outDir": "dist/electron",
+    "outDir": "dist",
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true
   },

@@ -43,6 +43,12 @@ app.whenReady().then(async () => {
         win.webContents.send("new-message", msg);
       });
     });
+
+    chatCore.onConnect((username) => {
+      BrowserWindow.getAllWindows().forEach((win) => {
+        win.webContents.send("connected", username);
+      });
+    });
   });
 
   ipcMain.handle("send-message", (_event, msg: string) => {

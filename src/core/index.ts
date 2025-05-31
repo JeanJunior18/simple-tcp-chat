@@ -5,7 +5,7 @@ import crypto from "crypto";
 
 (async () => {
   const rl = readline.createInterface({ input: stdin, output: stdout });
-  const hash = crypto.randomBytes(5).toString("utf-8");
+  const hash = crypto.createHash("sha256").digest("hex");
   const chatCore = new TcpChatNode();
   await chatCore.start(`Guest ${hash}`);
 

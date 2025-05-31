@@ -7,7 +7,9 @@ export class TCPChatClient {
   private socket!: Socket;
   private username!: string;
   private isConnected = false;
+
   private messageCallback?: (msg: Message) => void;
+  private connectCallback?: (username: string) => void;
 
   constructor(private readonly host: string, private readonly port = 3000) {}
 
@@ -42,8 +44,11 @@ export class TCPChatClient {
     this.messageCallback = callback;
   }
 
+  onConnect(callback: (username: string) => void) {
+    this.connectCallback = callback;
+  }
+
   private async connect(port: number, host: string) {
-    console.log("Conectando!");
     return new Promise((res, rej) => {
       this.socket = new Socket();
 
@@ -51,12 +56,14 @@ export class TCPChatClient {
 
       this.socket.on("connect", () => {
         this.isConnected = true;
-        writeMessage(this.socket, this.username, "intro");
         res(this.socket);
+        writeMessage(this.socket, this.username, "intro");
       });
 
       this.socket.on("data", (data) => {
+        this.connectCallback?.(this.username);
         const messages = readMessages(data);
+
         messages.forEach((message) => {
           this.handleIncomingMessage(message);
         });
@@ -84,9 +91,7 @@ export class TCPChatClient {
       const time = new Date(message.timestamp).toLocaleTimeString();
       console.log(`[${time}] ${message.from}: ${message.content}`);
 
-      if (this.messageCallback) {
-        this.messageCallback(message);
-      }
+      this.messageCallback?.(message);
     } catch (err) {
       console.error("Erro ao processar mensagem:", err);
     }
