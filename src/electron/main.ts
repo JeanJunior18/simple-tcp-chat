@@ -24,8 +24,9 @@ function createWindow() {
     console.log("🔧 DEV mode: carregando Vite dev server");
     mainWindow.loadURL("http://localhost:5173");
   } else {
-    console.log("📦 PROD mode: carregando build");
-    mainWindow.loadFile(path.join(__dirname, "../../renderer/index.html"));
+    const indexPath = path.join(__dirname, "../renderer/index.html");
+    console.log("📦 PROD mode: carregando build", indexPath);
+    mainWindow.loadFile(indexPath);
   }
 }
 app.whenReady().then(async () => {
