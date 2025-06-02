@@ -9,7 +9,7 @@ function SystemLog({ message }: { message: Message }) {
 }
 
 function IntroLog({ message }: { message: Message }) {
-  return <p className="system-message">{message.from} entrou no chat do ON Connect</p>
+  return <p className="system-message">{message.from} entrou no chat</p>
 }
 
 
