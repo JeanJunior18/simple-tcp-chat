@@ -44,13 +44,15 @@
   "config": {
     "forge": {
       "packagerConfig": {
-        "asar": true
+        "asar": true,
+        "icon": "images/favicon.ico"
       },
       "makers": [
         {
           "name": "@electron-forge/maker-squirrel",
           "config": {
-            "name": "SimpleTcpChat"
+            "name": "SimpleTcpChat",
+            "setupIcon": "images/setup-icon.ico"
           }
         }
       ]
