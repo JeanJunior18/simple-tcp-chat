@@ -19,10 +19,15 @@ Chat ponto a ponto (peer-to-peer) em rede local, feito com Node.js e TCP.
 
 - [x] Implementar orientação a objetos
 
+- [x] Criar UI com electron
+
+- [x] Reconectar em outro usuário quando o usuário servidor cair
+
+- [ ] Criar feedback na UI para conexões e reconexões
+
 ## 🔜 Ideias para futuras melhorias
 
 - [ ] Substituir o Bonjour por descoberta via **UDP Broadcast** puro
-- [ ] Criar uma interface CLI mais amigável com mensagens coloridas e timestamps
 - [ ] Implementar reconexão automática do cliente em caso de queda
 
 ---

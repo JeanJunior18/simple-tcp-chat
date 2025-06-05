@@ -10,6 +10,7 @@ export class TCPChatClient {
 
   private messageCallback?: (msg: Message) => void;
   private connectCallback?: (username: string) => void;
+  private onDisconnectCallback?: () => void;
 
   constructor(private readonly host: string, private readonly port = 3000) {}
 
@@ -37,7 +38,7 @@ export class TCPChatClient {
       this.socket.end();
       this.socket.destroy();
     }
-    process.exit();
+    // process.exit();
   }
 
   onMessage(callback: (msg: Message) => void) {
@@ -46,6 +47,10 @@ export class TCPChatClient {
 
   onConnect(callback: (username: string) => void) {
     this.connectCallback = callback;
+  }
+
+  onDisconnect(callback: () => void) {
+    this.onDisconnectCallback = callback;
   }
 
   private async connect(port: number, host: string) {
@@ -70,8 +75,10 @@ export class TCPChatClient {
       });
 
       this.socket.on("close", () => {
-        console.log("Connection closed");
-        process.exit();
+        console.log(
+          "Perdemos a conexão com o servidor. Tentando reconectar..."
+        );
+        this.handleDisconnection();
       });
 
       this.socket.on("error", (err) => {
@@ -84,6 +91,11 @@ export class TCPChatClient {
         rej();
       });
     });
+  }
+
+  private handleDisconnection() {
+    this.socket.destroy();
+    if (this.onDisconnectCallback) this.onDisconnectCallback();
   }
 
   private handleIncomingMessage(message: Message) {

@@ -16,7 +16,11 @@ export class TCPChatServer {
 
   start(username: string) {
     this.username = username;
-    return new Promise((res) => {
+    return new Promise((res, rej) => {
+      this.server.once("error", (err) => {
+        rej(err);
+      });
+
       this.server.listen(this.port, this.host, () => {
         console.log(`Server running on ${this.host}:${this.port}`);
         res(null);

@@ -17,8 +17,8 @@ export class TcpChatNode {
     try {
       await this.connectAsClient(username);
     } catch {
-      await this.connectAsHost(username);
       try {
+        await this.connectAsHost(username);
       } catch {
         await this.connectAsClient(username);
       }
@@ -66,6 +66,7 @@ export class TcpChatNode {
     if (!service.host) throw new Error("HOST is required");
     this.client = new TCPChatClient(service.host, service.port);
     await this.client.start(username);
+    this.client.onDisconnect(() => this.handleReconnection(username));
 
     if (this.onMessageCallback) {
       this.client.onMessage(this.onMessageCallback);
@@ -90,6 +91,27 @@ export class TcpChatNode {
     }
     if (this.onConnectCallback) {
       this.server.onConnect(this.onConnectCallback);
+    }
+  }
+
+  private async handleReconnection(username: string) {
+    this.client = undefined;
+    this.isServer = false;
+
+    try {
+      await this.connectAsClient(username);
+      console.log("Reconectado como cliente.");
+    } catch {
+      console.log(
+        "Nenhum servidor encontrado. Assumindo como novo servidor..."
+      );
+      try {
+        await this.connectAsHost(username);
+        console.log("Promovido a servidor.");
+      } catch (err) {
+        console.error("Erro ao tentar virar servidor:", err);
+        setTimeout(() => this.handleReconnection(username), 3000);
+      }
     }
   }
 
