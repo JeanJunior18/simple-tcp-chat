@@ -12,6 +12,7 @@ export class TcpChatNode {
   private isServer = false;
   private onMessageCallback?: (msg: Message) => void;
   private onConnectCallback?: (username: string) => void;
+  private onErrorCallback?: (err: Error) => void;
 
   async start(username: string) {
     try {
@@ -19,8 +20,18 @@ export class TcpChatNode {
     } catch {
       try {
         await this.connectAsHost(username);
-      } catch {
-        await this.connectAsClient(username);
+      } catch (err) {
+        if (this.onErrorCallback && err instanceof Error) {
+          this.onErrorCallback(err);
+        }
+        try {
+          await this.connectAsClient(username);
+        } catch (err2) {
+          if (this.onErrorCallback && err2 instanceof Error) {
+            this.onErrorCallback(err2);
+          }
+          throw err2;
+        }
       }
     }
 
@@ -57,6 +68,10 @@ export class TcpChatNode {
     if (this.server) {
       this.server.onConnect(callback);
     }
+  }
+
+  onError(callback: (err: Error) => void) {
+    this.onErrorCallback = callback;
   }
 
   private async connectAsClient(username: string) {

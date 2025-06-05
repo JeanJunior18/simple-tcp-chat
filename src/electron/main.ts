@@ -50,6 +50,17 @@ app.whenReady().then(async () => {
         win.webContents.send("connected", username);
       });
     });
+
+    chatCore.onError((err) => {
+      console.error("Erro no TcpChatNode:", err);
+      BrowserWindow.getAllWindows().forEach((win) => {
+        win.webContents.send("chat-error", {
+          name: err.name,
+          message: err.message,
+          stack: err.stack,
+        });
+      });
+    });
   });
 
   ipcMain.handle("send-message", (_event, msg: string) => {

@@ -8,4 +8,6 @@ contextBridge.exposeInMainWorld("api", {
     ipcRenderer.on("new-message", (_, msg) => callback(msg)),
   onConnect: (callback: (msg: string) => void) =>
     ipcRenderer.on("connected", (_, msg) => callback(msg)),
+  onChatError: (callback: any) =>
+    ipcRenderer.on("chat-error", (_event, err) => callback(err)),
 });

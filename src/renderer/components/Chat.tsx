@@ -12,7 +12,6 @@ function IntroLog({ message }: { message: Message }) {
   return <p className="system-message">{message.from} entrou no chat</p>
 }
 
-
 function MessageHandler({ message, currentUser }: { message: Message, currentUser: string | null }) {
   if (message.type === 'system')
     return <SystemLog message={message} />
@@ -22,7 +21,6 @@ function MessageHandler({ message, currentUser }: { message: Message, currentUse
 
   if (message.type === 'message')
     return <MessageBubble message={message} currentUser={currentUser} />
-
 }
 
 function Chat() {
@@ -35,6 +33,7 @@ function Chat() {
   useEffect(() => {
     window.api.onMessage(handleMessage);
     window.api.onConnect(handleConnect);
+    window.api.onChatError(handleChatError)
   }, []);
 
   function handleConnect(username: string) {
@@ -47,6 +46,10 @@ function Chat() {
     if (msg.type === 'intro' && msg.from === username) {
       setIsConnected(true)
     }
+  }
+
+  function handleChatError(username: string) {
+    if (isConnected) setIsConnected(false)
   }
 
   useEffect(() => {

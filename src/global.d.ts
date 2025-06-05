@@ -9,6 +9,7 @@ declare global {
       onMessage: (callback: (msg: Message) => void) => void;
       setUsername: (username: string) => void;
       onConnect: (callback: (username: string) => void) => void;
+      onChatError: (callback: (data: any) => void) => void;
     };
   }
 }
