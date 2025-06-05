@@ -37,7 +37,10 @@ function Chat() {
   }, []);
 
   function handleConnect(username: string) {
-    if (!isConnected) setIsConnected(true)
+    if (!isConnected) {
+      console.log('Usuário conectado')
+      setIsConnected(true)
+    }
   }
 
 
@@ -48,8 +51,9 @@ function Chat() {
     }
   }
 
-  function handleChatError(username: string) {
-    if (isConnected) setIsConnected(false)
+  function handleChatError(error: any) {
+    console.log('Algo deu errado:', error)
+    setIsConnected(false)
   }
 
   useEffect(() => {
@@ -60,7 +64,7 @@ function Chat() {
 
   return (
     <div className="chat-container">
-      <h1>TCP Chat</h1>
+      <h1>TCP Chat - {username} - {isConnected ? 'Online' : 'Offline'}</h1>
 
       <div className="chat-box">
         {messages.map((msg, index) => <MessageHandler key={index} message={msg} currentUser={username} />)}

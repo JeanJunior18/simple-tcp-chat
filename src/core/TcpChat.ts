@@ -12,7 +12,7 @@ export class TcpChatNode {
   private isServer = false;
   private onMessageCallback?: (msg: Message) => void;
   private onConnectCallback?: (username: string) => void;
-  private onErrorCallback?: (err: Error) => void;
+  private onErrorCallback?: (error: any) => void;
 
   async start(username: string) {
     try {
@@ -81,8 +81,10 @@ export class TcpChatNode {
     if (!service.host) throw new Error("HOST is required");
     this.client = new TCPChatClient(service.host, service.port);
     await this.client.start(username);
-    this.client.onDisconnect(() => this.handleReconnection(username));
 
+    if (this.handleReconnection) {
+      this.client.onDisconnect(() => this.handleReconnection(username));
+    }
     if (this.onMessageCallback) {
       this.client.onMessage(this.onMessageCallback);
     }
@@ -114,6 +116,7 @@ export class TcpChatNode {
     this.isServer = false;
 
     try {
+      this.onErrorCallback?.({ status: "DISCONNECTED" });
       await this.connectAsClient(username);
       console.log("Reconectado como cliente.");
     } catch {
